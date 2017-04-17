@@ -1,4 +1,4 @@
-package attacks
+package modules
 
 /*
 Will start a keylogging process

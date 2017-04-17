@@ -28,7 +28,7 @@ var (
 
 func main() {
 	fmt.Println("GoSwarm exploit Kit created by Pim Trouerbach")
-	fmt.Println("Listening on: https://www.twitter.com/" + commander)
+	// fmt.Println("Listening on: https://www.twitter.com/" + commander)
 	for true {
 		fmt.Println("Waiting for commands:")
 		time.Sleep(time.Second * waitTime)

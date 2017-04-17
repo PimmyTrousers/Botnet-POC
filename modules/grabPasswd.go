@@ -1,4 +1,4 @@
-package attacks
+package modules
 
 /*
 Will grab the passwd file
