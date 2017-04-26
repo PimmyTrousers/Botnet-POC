@@ -4,4 +4,5 @@
 Server/Front-End/controllers/
 client/modules/ReverseShell.go
 client/modules/ransom.go
+.idea/
 
