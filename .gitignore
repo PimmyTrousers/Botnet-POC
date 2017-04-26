@@ -1,1 +1,7 @@
-*.html
+.idea/GoSwarm.iml
+.idea/modules.xml
+.idea/workspace.xml
+Server/Front-End/controllers/
+client/modules/ReverseShell.go
+client/modules/ransom.go
+
