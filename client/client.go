@@ -2,7 +2,7 @@
 Botnet Client
 */
 
-package client
+package main
 
 import (
 	"encoding/base64"
