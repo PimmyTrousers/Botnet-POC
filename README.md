@@ -39,3 +39,9 @@ I have been using fresh to dynamically reload the server as it updates so all th
 `fresh`
 
 The server will bind to localhost on port 3000. To test this out go to your browser and enter 127.0.0.1:3000 and you should be directed to the home page of the webapp. 
+
+## Authors
+- Pim Trouerbach
+- Rishi Javia
+- Tristan Saldanha
+- Shannon Drew
