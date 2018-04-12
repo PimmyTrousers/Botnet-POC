@@ -27,3 +27,15 @@ We started this project with just using twitter as a C&C but we quickly scrapped
 - SQL database
 - login-system
 - Single, Selected, All Command Issuing
+
+## Running the Bot
+
+`go run client.go`
+
+## Running the Server
+
+I have been using fresh to dynamically reload the server as it updates so all thats required is entering `fresh` in the Server directory. 
+
+`fresh`
+
+The server will bind to localhost on port 3000. To test this out go to your browser and enter 127.0.0.1:3000 and you should be directed to the home page of the webapp. 
