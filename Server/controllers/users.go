@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Pimmytrousers/GoSwarm/Server/views"
+	"github.com/Pimmytrousers/GoSwarm/server/views"
 )
 
 func NewUsers() *Users {
@@ -27,15 +27,16 @@ func (u *Users) New(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Create is used to process the signup form when a user
-// tries to create a new user account.
-//
-// POST /signup
+type SignupForm struct {
+	Email    string `schema:"email"`
+	Password string `schema:"password"`
+}
+
 func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("wtf")
-	if err := r.ParseForm(); err != nil {
+	var form SignupForm
+	if err := parseForm(r, &form); err != nil {
 		panic(err)
 	}
-	fmt.Fprintln(w, r.PostForm["email"])
-	fmt.Fprintln(w, r.PostForm["password"])
+	fmt.Fprintln(w, "Email is", form.Email)
+	fmt.Fprintln(w, "Password is", form.Password)
 }
