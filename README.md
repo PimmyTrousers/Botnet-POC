@@ -40,6 +40,12 @@ I have been using fresh to dynamically reload the server as it updates so all th
 
 The server will bind to localhost on port 3000. To test this out go to your browser and enter 127.0.0.1:3000 and you should be directed to the home page of the webapp. 
 
+## Architecture Design Of The Bot
+![bot](bot.png)
+
+## Architecture Design Of The Server
+![server](server.jpg)
+
 ## Authors
 - Pim Trouerbach
 - Rishi Javia
