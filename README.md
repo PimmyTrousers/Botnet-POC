@@ -34,7 +34,7 @@ We started this project with just using twitter as a C&C but we quickly scrapped
 
 ## Running the Server
 
-I have been using `fresh` to dynamically reload the server as it updates so all thats required is entering `fresh` in the Server directory. 
+I have been using `fresh`` to dynamically reload the server as it updates so all thats required is entering `fresh` in the Server directory. 
 
 `fresh`
 
