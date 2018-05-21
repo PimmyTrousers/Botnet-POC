@@ -8,7 +8,7 @@ import (
 
 func parseForm(r *http.Request, dst interface{}) error {
 	if err := r.ParseForm(); err != nil {
-		panic(err)
+		return err
 	}
 	dec := schema.NewDecoder()
 	if err := dec.Decode(dst, r.PostForm); err != nil {
