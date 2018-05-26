@@ -48,6 +48,3 @@ The server will bind to localhost on port 3000. To test this out go to your brow
 
 ## Authors
 - Pim Trouerbach
-- Rishi Javia
-- Tristan Saldanha
-- Shannon Drew
