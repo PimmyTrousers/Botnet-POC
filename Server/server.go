@@ -1,16 +1,38 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Pimmytrousers/GoSwarm/server/controllers"
+	"github.com/Pimmytrousers/GoSwarm/server/models"
 	"github.com/gorilla/mux"
 )
 
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "Pim"
+	password = ""
+	dbname   = "GoSwarm"
+)
+
 func main() {
-	usersC := controllers.NewUsers()
+
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+
+	us, err := models.NewUserService(psqlInfo)
+	if err != nil {
+		panic(err)
+	}
+	defer us.Close()
+	us.AutoMigrate()
+
+	usersC := controllers.NewUsers(us)
 	staticC := controllers.NewStatic()
-	botsC := controllers.NewBot()
+	botsC := controllers.NewBots(us)
 
 	r := mux.NewRouter()
 	r.Handle("/", staticC.Home).Methods("GET")
