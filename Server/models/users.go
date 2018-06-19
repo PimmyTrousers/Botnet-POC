@@ -78,6 +78,10 @@ func (us *UserService) DestructiveReset() error {
 	return us.AutoMigrate()
 }
 
+/*
+COMMENTED OUT BECAUSE SIGNUP SHOULDN'T BE ALLOWED
+*/
+
 func (us *UserService) Create(user *User) error {
 	hashedBytes, err := bcrypt.GenerateFromPassword(
 		[]byte(user.Password+userPwPepper), bcrypt.DefaultCost)
@@ -115,7 +119,7 @@ func (us *UserService) AutoMigrate() error {
 //   nil, ErrNotFound
 // If the password provided is invalid, this will return
 //   nil, ErrInvalidPassword
-func (us *UserService) Authemticate(email string, password string) (*User, error) {
+func (us *UserService) Authenticate(email string, password string) (*User, error) {
 	foundUser, err := us.ByEmail(email)
 	if err != nil {
 		return nil, err
