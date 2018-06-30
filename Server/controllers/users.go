@@ -5,25 +5,22 @@ import (
 	"net/http"
 
 	"github.com/Pimmytrousers/GoSwarm/server/models"
+	"github.com/Pimmytrousers/GoSwarm/server/rand"
 	"github.com/Pimmytrousers/GoSwarm/server/views"
 )
-
-func NewUsers(us *models.UserService) *Users {
-	return &Users{
-		/*
-			COMMENTED OUT BECAUSE SIGNUP SHOULDN'T BE ALLOWED
-		*/
-
-		NewView:   views.NewView("bootstrap", "users/new"),
-		LoginView: views.NewView("bootstrap", "users/login"),
-		us:        us,
-	}
-}
 
 type Users struct {
 	NewView   *views.View
 	LoginView *views.View
-	us        *models.UserService
+	us        models.UserService
+}
+
+func NewUsers(us models.UserService) *Users {
+	return &Users{
+		NewView:   views.NewView("bootstrap", "users/new"),
+		LoginView: views.NewView("bootstrap", "users/login"),
+		us:        us,
+	}
 }
 
 // New is used to render the form where a user can
@@ -56,13 +53,17 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 		Email:    form.Email,
 		Password: form.Password,
 	}
-
 	if err := u.us.Create(&user); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprintln(w, "User is", user)
+	err := u.signIn(w, &user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	http.Redirect(w, r, "/cookietest", http.StatusFound)
 }
 
 type LoginForm struct {
@@ -79,30 +80,56 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch err {
 		case models.ErrNotFound:
-			fmt.Fprintf(w, "Invalid email address")
+			fmt.Fprintln(w, "Invalid email address.")
 		case models.ErrInvalidPassword:
-			fmt.Fprintf(w, "Invalid password provided")
+			fmt.Fprintln(w, "Invalid password provided.")
 		default:
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
+		return
 	}
 
-	cookie := http.Cookie{
-		Name:  "email",
-		Value: user.Email,
-	}
-	http.SetCookie(w, &cookie)
-	fmt.Fprintln(w, user)
-
-}
-
-func (u *Users) CookieTest(w http.ResponseWriter, r *http.Request) {
-	// TODO: Implement this
-	cookie, err := r.Cookie("email")
+	err = u.signIn(w, user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Fprintf(w, "Cookie is: %s", cookie.Value)
+	http.Redirect(w, r, "/cookietest", http.StatusFound)
+}
 
+func (u *Users) CookieTest(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("remember_token")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user, err := u.us.ByRemember(cookie.Value)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
+	fmt.Fprintln(w, user)
+
+}
+
+func (u *Users) signIn(w http.ResponseWriter, user *models.User) error {
+	if user.Remember == "" {
+		token, err := rand.RememberToken()
+		if err != nil {
+			return err
+		}
+		user.Remember = token
+		err = u.us.Update(user)
+		if err != nil {
+			return err
+		}
+	}
+	cookie := http.Cookie{
+		Name:     "remember_token",
+		Value:    user.Remember,
+		HttpOnly: true,
+	}
+	http.SetCookie(w, &cookie)
+	return nil
 }

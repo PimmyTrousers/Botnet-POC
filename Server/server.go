@@ -39,10 +39,6 @@ func main() {
 
 	r.Handle("/contact", staticC.Contact).Methods("GET")
 
-	/*
-		COMMENTED OUT BECAUSE SIGNUP SHOULDN'T BE ALLOWED
-	*/
-
 	r.HandleFunc("/signup", usersC.New).Methods("GET")
 	r.HandleFunc("/signup", usersC.Create).Methods("POST")
 
